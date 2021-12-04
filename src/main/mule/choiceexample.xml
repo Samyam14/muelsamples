@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="6358b468-6a32-41e9-a1be-71ae34a80af0" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="choiceexampleFlow" doc:id="6aca5f0f-a87a-4d85-99ac-78f812c4f9f5" >
+		<http:listener doc:name="Listener" doc:id="3e1ea2ea-4e1a-464c-a906-91819d577695" config-ref="HTTP_Listener_config" path="/choicetest"/>
+		<set-variable value="#[payload.city]" doc:name="Set Variable" doc:id="03b8d51b-7ceb-4f72-8eb0-291a669f641f" variableName="city"/>
+		<choice doc:name="Choice" doc:id="2c6e8b7d-f41b-4f1c-be87-10c8ed104a5c" >
+			<when expression='#[vars.city == "addis ababa"]'>
+				<ee:transform doc:name="Transform Message" doc:id="ebdc4a57-550d-458f-bae0-a14f3ee2f0b4">
+					<ee:message>
+						<ee:set-payload><![CDATA["Success!"
+]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			</when>
+			<otherwise>
+				<ee:transform doc:name="Transform Message" doc:id="70607b60-2290-4b1e-818b-f9c8493df3e8">
+					<ee:message>
+						<ee:set-payload><![CDATA["Failure**"
+
+]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			</otherwise>
+		</choice>
+	</flow>
+</mule>
